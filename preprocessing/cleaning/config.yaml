@@ -1,0 +1,21 @@
+ops:
+  load_data:
+    config:
+      file: "news_sample.csv"
+      drop_unnamed: true
+  clean_data:
+    config:
+      lower: true
+      date_regex: '[a-zA-Z]+.?\s*\d{1,2}[,.]?\s*\d{4}'
+      no_line_breaks: true
+      no_urls: true
+      no_emails: true
+      no_numbers: true
+      replace_with_url: "<URL>"
+      replace_with_email: "<EMAIL>"
+      replace_with_number: "<NUM>"
+      replace_with_date: "<DATE>"
+  save_cleaned:
+    config:
+      filename: "news_sample_cleaned.csv"
+      format: "csv"
