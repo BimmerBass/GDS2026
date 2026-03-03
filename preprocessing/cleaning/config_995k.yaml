@@ -1,5 +1,5 @@
 load_data:
-  file: "news_sample.csv"
+  file: "995,000_rows.csv"
 clean_data:
   lower: true
   collapse_whitespace: true
@@ -9,4 +9,4 @@ clean_data:
     '([^\W\d]*)://(((\w*@)?([\w-]+(\.[\w-]+)+)(:[\d]+)?))?(/[\w-]+)*\/?(?:\?[^\s#]*)?(#[\w-]+)?': "<URL>"
     '\d[\d.,]*': "<NUM>"
 save_data:
-  filename: "news_sample_cleaned.csv"
+  filename: "full_dataset_cleaned.csv"
