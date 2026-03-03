@@ -32,4 +32,7 @@ class Tokenizer:
         self.__mutable = False
 
     def __tokenize(self, text : str) -> list[str]:
-        no_
+        no_punct = re.sub(r"[^\w<> ]", '', text)
+        no_ws = re.sub(r"\s+", " ", text)
+
+        terms = no_ws.split(" ")
