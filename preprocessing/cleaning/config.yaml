@@ -1,5 +1,6 @@
 load_data:
   file: "news_995k.csv"
+  usecols: ["id", "domain", "type", "url", "content", "title"]
 clean_data:
   lower: true
   collapse_whitespace: true

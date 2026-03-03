@@ -1,0 +1,3 @@
+tokenize:
+  apply_stemming: false
+  remove_stopwords: false

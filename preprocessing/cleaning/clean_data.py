@@ -15,9 +15,10 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-def load_data(filepath : str) -> pd.DataFrame:
-    print(f"Reading CSV {filepath}")
-    df = pd.read_csv(filepath, usecols=["id", "domain", "type", "url", "content", "title"])
+def load_data(config : dict[str,str]) -> pd.DataFrame:
+    print(f"Reading CSV {config['file']}")
+    print(f"- Loading columns: [{', '.join(config['usecols'])}]")
+    df = pd.read_csv(config["file"], usecols=config['usecols'])
     return df
 
 def save_data(df: pd.DataFrame, filepath: str) -> None:
@@ -54,6 +55,6 @@ if __name__=="__main__":
     with open(args.config, "r") as stream:
         config = yaml.safe_load(stream)
 
-    df = load_data(config["load_data"]["file"])
+    df = load_data(config["load_data"])
     cleaned = clean_data(df, config["clean_data"])
     save_data(cleaned, config["save_data"]["filename"])
