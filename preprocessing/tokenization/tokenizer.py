@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from nltk.stem.api import StemmerI
-from nltk.stem import PorterStemmer
 from collections import Counter
+from typing import Any
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
@@ -16,6 +16,17 @@ class TokenizerConfig:
     tokens_to_ids: dict[str,int] = field(default_factory=lambda: {})
     stopwords: list[str] = field(default_factory=lambda: [])
     stemmer: StemmerI | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "top_n": self.top_n,
+            "special_tokens": self.special_tokens,
+            "tokens_to_ids": self.tokens_to_ids,
+            "stopwords": self.stopwords,
+            "stemmer": type(self.stemmer).__name__,
+            "tokens": self.tokens.tolist(),
+            "token_frequencies": self.token_frequencies.tolist()
+        }
 
 
 class Tokenizer:

@@ -40,7 +40,7 @@ def build_tokenizer(column: pd.DataFrame, config : dict[str, str]) -> Tokenizer:
 
 def save_tokenizer(config : TokenizerConfig, filepath : str) -> None:
     with open(filepath, "w", encoding="utf-8") as file:
-        json.dump(config, file, ensure_ascii=False, indent=4)
+        json.dump(config.to_dict(), file, ensure_ascii=False, indent=4)
 
 
 if __name__=="__main__":
