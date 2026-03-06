@@ -1,60 +1,53 @@
-from tqdm import tqdm
+from dataclasses import dataclass, field
+from cleantext import clean
+import polars as pl
 import pandas as pd
+from tqdm import tqdm
 import numpy as np
-import yaml
 import re
-import argparse
-from pathlib import Path
+
+@dataclass
+class CleaningConfig:
+    lower: bool = True
+    collapse_whitespace: bool = True
+    regexes: dict[str, str] = field(default_factory=lambda: {
+        r'[a-zA-Z]+.?\s*\d{1,2}[,.]?\s*\d{4}': "<DATE>",
+        r'[\w.]+@[\w.]+': "<EMAIL>",
+        r'([^\W\d]*)://(((\w*@)?([\w-]+(\.[\w-]+)+)(:[\d]+)?))?(/[\w-]+)*\/?(?:\?[^\s#]*)?(#[\w-]+)?': "<URL>",
+        r'\d[\d.,]*': "<NUM>"
+    })
 
 
-tqdm.pandas()
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("config", type=Path, help="Path to YAML config file")
-    args = parser.parse_args()
-    return args
-
-def load_data(config : dict[str,str]) -> pd.DataFrame:
-    print(f"Reading CSV {config['file']}")
-    print(f"- Loading columns: [{', '.join(config['usecols'])}]")
-    df = pd.read_csv(config["file"], usecols=config['usecols'])
-    return df
-
-def save_data(df: pd.DataFrame, filepath: str) -> None:
-    print(f"Saving cleaned data to {filepath}")
-    df.to_csv(filepath, index=False)
-
-
-
-def clean_text(text : str, config:dict[str,str]) -> str:
+def clean_text(text : str, config: CleaningConfig) -> str:
     text = str(text)
 
-    if config["lower"]:
+    if config.lower:
         text = text.lower()
-    for regex in config["regexes"]:
-        text = re.sub(regex, config["regexes"][regex], text)
-    if config["collapse_whitespace"]:
-        text = re.sub(r"\s+", " ", text)
-    return text
+    text = re.sub(r"[<>]", " ", text)
 
+    return clean(
+        text,
+        lower=False, # do not lowercase now, since masked tokens will then also be lowercased.
+        no_line_breaks=config.collapse_whitespace,
+        no_urls=True,
+        no_emails=True,
+        no_numbers=True,
+        replace_with_url="<URL>",
+        replace_with_email="<EMAIL>",
+        replace_with_number="<NUM>")
 
-def clean_data(df: pd.DataFrame, config : dict[str, str]) -> pd.DataFrame:
-    print(f"Cleaning {len(df)} rows")
-    df["type"] = df["type"].astype("category")
+def clean_data(df: pd.DataFrame, config: CleaningConfig) -> pd.DataFrame:
+    pdf = pl.from_pandas(df)
+    expr = pl.col(["title", "content"])
 
-    print("\nCleaning content")
-    df["content"] = df["content"].progress_apply(clean_text, config=config)
+    if config.lower:
+        expr = expr.str.to_lowercase()
 
-    print("\nCleaning title")
-    df["title"] = df["title"].progress_apply(clean_text, config=config)
-    return df
+    expr = expr.str.replace_all(r"[<>]", " ")
 
-if __name__=="__main__":
-    args = parse_args()
-    with open(args.config, "r") as stream:
-        config = yaml.safe_load(stream)
+    for regex, repl in config.regexes.items():
+        expr = expr.str.replace_all(regex, repl)
+    expr = expr.str.replace_all(r"\s+", " ") # collapse whitespace
 
-    df = load_data(config["load_data"])
-    cleaned = clean_data(df, config["clean_data"])
-    save_data(cleaned, config["save_data"]["filename"])
+    pdf = pdf.with_columns(expr)
+    return pdf.to_pandas(use_pyarrow_extension_array=True)
