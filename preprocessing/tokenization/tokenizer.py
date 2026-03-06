@@ -62,7 +62,7 @@ class Tokenizer:
         most_common_n = counter.most_common(self.__config.top_n)
         self.__config.tokens = np.array([tk for tk, _ in most_common_n])
         self.__config.token_frequencies = np.array([i for _, i in most_common_n])
-        self.__config.tokens_to_ids = {inx : tk.item() for inx,tk in enumerate(self.__config.tokens)}
+        self.__config.tokens_to_ids = {tk.item() : inx for inx,tk in enumerate(self.__config.tokens)}
         self.__mutable = False
         return len(most_common_n)
 
