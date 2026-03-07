@@ -1,10 +1,6 @@
 from dataclasses import dataclass, field
-from cleantext import clean
 import polars as pl
 import pandas as pd
-from tqdm import tqdm
-import numpy as np
-import re
 
 @dataclass
 class CleaningConfig:
@@ -19,22 +15,12 @@ class CleaningConfig:
 
 
 def clean_text(text : str, config: CleaningConfig) -> str:
-    text = str(text)
-
-    if config.lower:
-        text = text.lower()
-    text = re.sub(r"[<>]", " ", text)
-
-    return clean(
-        text,
-        lower=False, # do not lowercase now, since masked tokens will then also be lowercased.
-        no_line_breaks=config.collapse_whitespace,
-        no_urls=True,
-        no_emails=True,
-        no_numbers=True,
-        replace_with_url="<URL>",
-        replace_with_email="<EMAIL>",
-        replace_with_number="<NUM>")
+    df = pd.DataFrame({
+        "content": [text],
+        "title": [""]
+    })
+    cleaned = clean_data(df, config)
+    return cleaned.loc[0,"content"]
 
 def clean_data(df: pd.DataFrame, config: CleaningConfig) -> pd.DataFrame:
     pdf = pl.from_pandas(df)
@@ -51,3 +37,18 @@ def clean_data(df: pd.DataFrame, config: CleaningConfig) -> pd.DataFrame:
 
     pdf = pdf.with_columns(expr)
     return pdf.to_pandas(use_pyarrow_extension_array=True)
+
+def filter_dataset(
+        df : pd.DataFrame,
+        drop_cols: list[str],
+        remove_nulls_cols: list[str],
+        deduplicate_cols: list[str],
+        convert_to_cat_cols: list[str]) -> pd.DataFrame:
+    dropped = df.drop(columns=drop_cols)
+    for col in deduplicate_cols:
+        dropped[col] = dropped[col].drop_duplicates()
+    for col in convert_to_cat_cols:
+        dropped[col] = dropped[col].astype("category")
+
+    dropped = dropped.dropna(axis=0, subset=remove_nulls_cols)
+    return dropped

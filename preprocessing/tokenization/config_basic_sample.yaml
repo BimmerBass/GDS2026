@@ -1,9 +1,0 @@
-load_data:
-  file: "news_sample_cleaned.csv"
-  usecols: ["content"]
-build_tokenizer:
-  top_n: 10000
-  stemming: null
-  remove_stopwords: false
-save_data:
-  filename: "vocabulary_sample.json"
