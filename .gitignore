@@ -3,3 +3,5 @@
 **/*.zip
 **/__pycache__
 **/*.json
+
+!data/news_sample.csv
