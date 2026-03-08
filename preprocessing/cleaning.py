@@ -43,12 +43,16 @@ def filter_dataset(
         drop_cols: list[str],
         remove_nulls_cols: list[str],
         deduplicate_cols: list[str],
-        convert_to_cat_cols: list[str]) -> pd.DataFrame:
+        convert_to_cat_cols: list[str],
+        remove_cols_eq : dict[str, str]) -> pd.DataFrame:
     dropped = df.drop(columns=drop_cols)
     for col in deduplicate_cols:
         dropped[col] = dropped[col].drop_duplicates()
     for col in convert_to_cat_cols:
         dropped[col] = dropped[col].astype("category")
 
+    for col in remove_cols_eq:
+        val = remove_cols_eq[col]
+        dropped = dropped[dropped[col] != val]
     dropped = dropped.dropna(axis=0, subset=remove_nulls_cols)
-    return dropped
+    return dropped[pd.to_numeric(dropped["id"], errors="coerce").notna()]
