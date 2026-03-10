@@ -11,7 +11,7 @@ class BagofWordsDataset(Dataset):
         df = pd.read_csv(ds_path, usecols=["content", "type"])
         df["type"] = df["type"].astype("category")
         # despite the name, unreliable is defined as "Sources that may be reliable but whose contents require further verification."
-        reliables = df["type"].isin(["reliable", "political", "clickbait", "bias", "unreliable"])
+        reliables = df["type"].isin(["reliable", "political", "clickbait", "bias"])
         
         self.tokenizer = Tokenizer.from_json(vocab_path, False)
         self.__labels = torch.tensor(reliables.astype(int).values).float()
