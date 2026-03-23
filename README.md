@@ -10,7 +10,8 @@ Download the news sample and the 995k dataset and place the CSV files in `data/n
 Run the ```preprocessing.ipynb``` notebook.
 
 ### Modelling
-Run the ```modelling.ipynb``` notebook
+Run the ```logistic_regression_model.ipynb``` notebook.
+Run the ```linearSVC_training.ipynb``` and the `linearSVC.ipynb` notebooks.
 
 ### Evaluation
 Run the ```evaluation.ipynb``` notebook.
