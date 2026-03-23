@@ -11,6 +11,7 @@ Run the ```preprocessing.ipynb``` notebook.
 
 ### Modelling
 Run the ```logistic_regression_model.ipynb``` notebook.
+
 Run the ```linearSVC_training.ipynb``` and the `linearSVC.ipynb` notebooks.
 
 ### Evaluation
