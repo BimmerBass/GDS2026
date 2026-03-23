@@ -1,9 +1,8 @@
 **/.venv
+**/*.joblib
 **/*.csv
 **/*.zip
 **/__pycache__
 **/*.json
 
 !data/news_sample.csv
-data/models/checkpoints/best_model_2026-03-15_11
-data/models/checkpoints/best_model_2026-03-15_12
