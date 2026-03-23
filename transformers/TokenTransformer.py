@@ -6,6 +6,8 @@ import numpy as np
 import Stemmer
 import re
 
+tqdm.pandas()
+
 class TokenTransformer(BaseEstimator, TransformerMixin):
     def __init__(
             self, 
@@ -16,7 +18,7 @@ class TokenTransformer(BaseEstimator, TransformerMixin):
         super().__init__()
         self.top_n = top_n
         self.special_tokens = special_tokens
-        self.stopwords : set[str] = set(stopwords)
+        self.stopwords : set[str] = stopwords
         self.stem = stem
 
         self.tokens : np.ndarray = []
@@ -42,6 +44,7 @@ class TokenTransformer(BaseEstimator, TransformerMixin):
         self._init_runtime_objects()
 
     def fit(self, X: pd.DataFrame, y = None):
+        self.stopwords = set(self.stopwords)
         content_column = X["content"]
         counter = Counter()
         for text in tqdm(content_column, total=len(content_column)):
