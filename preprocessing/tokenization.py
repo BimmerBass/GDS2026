@@ -90,6 +90,10 @@ class Tokenizer:
         self.__config.tokens_to_ids = { tk.item() : inx for inx,tk in enumerate(self.__config.tokens)}
         self.__mutable = False
         return len(tokens_w_count)
+    
+    def text_to_tokens(self, text : str) -> list[str]:
+        ids = self.text_to_ids(text)
+        return [self.get_token_from_id(id) for id in ids]
 
     def text_to_ids(self, text : str) -> np.ndarray:
         terms = self.__tokenize(text)
