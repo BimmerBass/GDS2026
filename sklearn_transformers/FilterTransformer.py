@@ -18,6 +18,7 @@ class FilterTransformer(BaseEstimator, TransformerMixin):
         self.remove_cols_with_value = remove_cols_with_value
 
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
     
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
