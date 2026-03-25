@@ -3,6 +3,7 @@
 **/*.zip
 **/__pycache__
 **/*.json
+**/*.joblib
 
 !data/news_sample.csv
 data/models/checkpoints/best_model_2026-03-15_11
