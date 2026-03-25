@@ -7,3 +7,4 @@
 **/*.joblib
 
 !data/news_sample.csv
+text.ipynb
