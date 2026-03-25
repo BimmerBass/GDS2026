@@ -3,6 +3,7 @@
 **/*.zip
 **/__pycache__
 **/*.json
+**/*.tsv
 
 !data/news_sample.csv
 text.ipynb
