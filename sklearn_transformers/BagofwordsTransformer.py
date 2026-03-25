@@ -5,20 +5,18 @@ import pandas as pd
 import numpy as np
 
 class BagofwordsTransformer(BaseEstimator, TransformerMixin):
-    def __init__(self, column : str, vocab_size: int):
+    def __init__(self, vocab_size: int):
         super().__init__()
-        self.column = column
         self.vocab_size = vocab_size
 
     def fit(self, X,y=None):
         self.is_fitted_ = True
         return self
     
-    def transform(self, X : pd.DataFrame) -> np.ndarray:
+    def transform(self, X : pd.Series[list[int]]) -> np.ndarray:
         rows,cols, data = [], [], []
 
-        docs = X[self.column]
-        for i,tokens in tqdm(enumerate(docs), total=len(docs)):
+        for i,tokens in tqdm(enumerate(X), total=len(X)):
             if len(tokens) < 1:
                 continue
             counts = np.bincount(tokens, minlength=self.vocab_size)
@@ -26,4 +24,4 @@ class BagofwordsTransformer(BaseEstimator, TransformerMixin):
             rows.extend([i]*len(nz))
             cols.extend(nz.tolist())
             data.extend(counts[nz].tolist())
-        return csr_matrix((data, (rows, cols)), shape=(len(docs), self.vocab_size), dtype=np.int32)
+        return csr_matrix((data, (rows, cols)), shape=(len(X), self.vocab_size), dtype=np.int32)

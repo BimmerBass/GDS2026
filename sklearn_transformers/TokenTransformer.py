@@ -66,9 +66,8 @@ class TokenTransformer(BaseEstimator, TransformerMixin):
     def size(self) -> int:
         return self.tokens.size
 
-    def transform(self, X : pd.DataFrame) -> pd.DataFrame:
-        X["content"] = X["content"].progress_apply(self.text_to_ids)
-        return X
+    def transform(self, X : pd.DataFrame) -> pd.Series:
+        return X["content"].progress_apply(self.text_to_ids)
     
     def text_to_ids(self, text : str) -> np.ndarray:
         terms = self.__tokenize(text)
