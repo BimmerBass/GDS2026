@@ -10,5 +10,5 @@ class CatColPrependTransformer(BaseEstimator, TransformerMixin):
         self.column = column
 
     def fit(self, X : pd.DataFrame, y = None):
-        
+        self.is_fitted_ = True
         return self

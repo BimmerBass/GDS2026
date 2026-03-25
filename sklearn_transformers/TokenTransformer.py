@@ -59,6 +59,8 @@ class TokenTransformer(BaseEstimator, TransformerMixin):
         self.tokens = np.array([tk for tk, _ in tokens_w_count])
         self.token_frequencies = np.array([i for _, i in tokens_w_count])
         self.tokens_to_ids = { tk.item() : inx for inx,tk in enumerate(self.tokens)}
+
+        self.is_fitted_ = True
         return self
     
     def size(self) -> int:

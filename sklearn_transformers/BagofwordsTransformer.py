@@ -11,6 +11,7 @@ class BagofwordsTransformer(BaseEstimator, TransformerMixin):
         self.vocab_size = vocab_size
 
     def fit(self, X,y=None):
+        self.is_fitted_ = True
         return self
     
     def transform(self, X : pd.DataFrame) -> np.ndarray:
