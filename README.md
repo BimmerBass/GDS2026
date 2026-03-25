@@ -7,12 +7,15 @@ The following notebooks should be executed sequentially as one notebook likely d
 Download the news sample and the 995k dataset and place the CSV files in `data/news_sample.csv` and `data/995,000_rows.csv` respectively.
 
 ### Processing
-Run the ```preprocessing.ipynb``` notebook.
+Run the `preprocessing.ipynb` notebook.
+
+Run the `data_analysis.ipynb` notebook.
 
 ### Modelling
-Run the ```logistic_regression_model.ipynb``` notebook.
+Run the `simple_model.ipynb` notebook.
 
-Run the ```linearSVC_training.ipynb``` and the `linearSVC.ipynb` notebooks.
+Run the `advanced_model.ipynb` notebook.
 
 ### Evaluation
-Run the ```evaluation.ipynb``` notebook.
+Run the `evaluation.ipynb` notebook.
+
