@@ -55,10 +55,10 @@ class AdvancedModel:
         tokens = content.progress_map(self.tokenizer.text_to_ids)
         return self.model.predict(self.vectorizer.transform(tokens))
 
-    def save(self, path : str):
+    def save(self, path : str, compress : int = 0):
         if not os.path.isdir(path):
             os.mkdir(path)
 
-        joblib.dump(self.tokenizer, path + "/tokenizer.joblib")
-        joblib.dump(self.vectorizer, path + "/vectorizer.joblib")
-        joblib.dump(self.model, path + "/model.joblib")
+        joblib.dump(self.tokenizer, path + "/tokenizer.joblib", compress=compress)
+        joblib.dump(self.vectorizer, path + "/vectorizer.joblib", compress=compress)
+        joblib.dump(self.model, path + "/model.joblib", compress=compress)
