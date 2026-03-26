@@ -1,5 +1,6 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 from scipy.sparse import csr_matrix
+from typing import Sequence
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
@@ -13,7 +14,7 @@ class BagofwordsTransformer(BaseEstimator, TransformerMixin):
         self.is_fitted_ = True
         return self
     
-    def transform(self, X : pd.Series[list[int]]) -> np.ndarray:
+    def transform(self, X : Sequence[list[int]]) -> np.ndarray:
         rows,cols, data = [], [], []
 
         for i,tokens in tqdm(enumerate(X), total=len(X)):

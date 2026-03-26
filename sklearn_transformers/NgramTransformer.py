@@ -1,6 +1,7 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 from .PrefitTransformer import PrefitTransformer
 from collections import Counter
+from typing import Sequence
 from typing import Tuple
 from tqdm import tqdm
 import pandas as pd
@@ -27,9 +28,9 @@ class NgramTransformer(BaseEstimator, TransformerMixin):
     def fit(self, X : pd.DataFrame, y=None):
         id_lists : list[list[int]] = self.tokenizer.transform(X)
         counter = Counter()
-        for list in tqdm(id_lists):
-            list = [id.item() for id in list]
-            ngrams = self.__get_ngrams(list)
+        for idlist in tqdm(id_lists):
+            idlist = [id.item() for id in idlist]
+            ngrams = self.__get_ngrams(idlist)
             counter.update(ngrams)
 
         ngrams_w_count = counter.most_common(self.top_n)
@@ -40,7 +41,7 @@ class NgramTransformer(BaseEstimator, TransformerMixin):
         self.is_fitted_ = True
         return self
     
-    def transform(self, X:pd.DataFrame) -> pd.Series[list[int]]:
+    def transform(self, X:pd.DataFrame) -> Sequence[list[int]]:
         return X["content"].progress_apply(self.text_to_ids)
 
     def text_to_ids(self, text : str) -> list[int]:
