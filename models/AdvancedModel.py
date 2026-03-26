@@ -32,7 +32,7 @@ class AdvancedModel:
             max_features=max_features,
             lowercase=False
         )
-        model.model = LogisticRegression(max_iter=500, C=10, class_weight='balanced', solver='sag')
+        model.model = LogisticRegression(max_iter=500, C=10, class_weight='balanced', solver='sag', random_state=0)
         return model
 
     def __init__(self):
