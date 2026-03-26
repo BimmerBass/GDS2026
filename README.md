@@ -17,5 +17,7 @@ Run the `simple_model.ipynb` notebook.
 Run the `advanced_model.ipynb` notebook.
 
 ### Evaluation
+Run the `LIAR_preprocess.ipynb` notebook.
+
 Run the `evaluation.ipynb` notebook.
 
