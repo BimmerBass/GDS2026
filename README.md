@@ -4,7 +4,7 @@ Exam project for the Introductory Data Science course at UCPH, 2026
 The following notebooks should be executed sequentially as one notebook likely depends on the output of the previous one.
 ### Debugging and tokenization.
 
-Download the news sample and the 995k dataset and place the CSV files in `data/news_sample.csv` and `data/995,000_rows.csv` respectively.
+Download the news sample, the 995k and the LIAR datasets and place the specified files in `data/news_sample.csv`, `data/995,000_rows.csv` and `data/LIAR/train.tsv` respectively.
 
 ### Processing
 Run the `preprocessing.ipynb` notebook.
@@ -13,6 +13,8 @@ Run the `data_analysis.ipynb` notebook.
 
 ### Modelling
 Run the `simple_model.ipynb` notebook.
+
+Run the `adv_model_training.ipynb` notebook.
 
 Run the `advanced_model.ipynb` notebook.
 
